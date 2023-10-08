@@ -1,20 +1,59 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import {useEffect, useState} from "react";
+import {ActivityIndicator, StatusBar, View, FlatList, Text, StyleSheet} from "react-native";
+import Post from "./src/components/Cards/Post";
+import axios from "axios";
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Hello, world!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    const [isLoading, setLoading] = useState(false);
+    const [posts, setPosts] = useState([]);
+
+    const getPosts = () => {
+        setLoading(true);
+
+        axios.get('https://652264b7f43b17938414756e.mockapi.io/articles')
+            .then(resp => {
+                setPosts(resp.data);
+            })
+            .catch(() => {
+                alert('Ошибка');
+            }).finally(() => {
+                setLoading(false);
+            });
+    };
+
+    useEffect(() => {
+        getPosts();
+    }, []);
+
+    if (isLoading) {
+        return (
+            <View style={styles.loaderContainer}>
+                <ActivityIndicator size={"large"} />
+                <Text style={styles.loaderText}>Loading...</Text>
+            </View>
+        )
+    }
+
+    return (
+        <View>
+            {posts && !isLoading && (
+                <FlatList data={posts} renderItem={({item}) => (
+                    <Post title={item.title} createdAt={item.createdAt} imageUrl={item.imageUrl} />
+                )} />
+            )}
+            <StatusBar style="auto" />
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+    loaderContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    loaderText: {
+        marginTop: 15,
+        fontSize: 18,
+    }
+})
