@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {ActivityIndicator, StatusBar, View, FlatList, Text, StyleSheet} from "react-native";
+import {ActivityIndicator, StatusBar, View, FlatList, Text, StyleSheet, RefreshControl} from "react-native";
 import Post from "./src/components/Cards/Post";
 import axios from "axios";
 
@@ -36,11 +36,13 @@ export default function App() {
 
     return (
         <View>
-            {posts && !isLoading && (
-                <FlatList data={posts} renderItem={({item}) => (
+            <FlatList 
+                refreshControl={<RefreshControl refreshing={isLoading} onRefresh={() => getPosts()} />} 
+                data={posts} 
+                renderItem={({item}) => (
                     <Post title={item.title} createdAt={item.createdAt} imageUrl={item.imageUrl} />
-                )} />
-            )}
+                )} 
+            />
             <StatusBar style="auto" />
         </View>
     );
