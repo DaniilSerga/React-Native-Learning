@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {ActivityIndicator, StatusBar, View, FlatList, Text, StyleSheet, RefreshControl} from "react-native";
+import {ActivityIndicator, StatusBar, View, FlatList, Text, StyleSheet, RefreshControl, TouchableOpacity} from "react-native";
 import Post from "./src/components/Cards/Post";
 import axios from "axios";
 
@@ -40,7 +40,9 @@ export default function App() {
                 refreshControl={<RefreshControl refreshing={isLoading} onRefresh={() => getPosts()} />} 
                 data={posts} 
                 renderItem={({item}) => (
-                    <Post title={item.title} createdAt={item.createdAt} imageUrl={item.imageUrl} />
+                    <TouchableOpacity>
+                        <Post title={item.title} createdAt={item.createdAt} imageUrl={item.imageUrl} />
+                    </TouchableOpacity>
                 )} 
             />
             <StatusBar style="auto" />
