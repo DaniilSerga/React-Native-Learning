@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         width: '100%',
         padding: 15,
         borderBottomWidth: 1,
-        borderBottomColor: '#000000',
+        borderBottomColor: 'rgba(0, 0, 0, 0.2)',
         borderBottomStyle: 'solid',
     },
     postDetails: {
